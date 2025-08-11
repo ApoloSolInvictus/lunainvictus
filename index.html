@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Despertar de la Luna - Un Tributo Invictus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Quattrocento:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- 
+        Chosen Palette: Alquimia Romántica (Azul Noche, Plata Lunar, Oro Solar)
+        Application Structure Plan: Se ha elegido una estructura narrativa de desplazamiento vertical para crear una experiencia emocional y reverente, digna de un tributo. Fluye desde la introducción de los dos principios divinos (Sol/Apolo, Luna/Artemisa) hasta su sagrada Unión Alquímica (lienzo interactivo), y finalmente al propósito de esta unión (El Despertar). Esta estructura cuenta una historia, haciendo que los conceptos abstractos de la alquimia y la unión divina se sientan personales y profundos.
+        Visualization & Content Choices: La visualización central es una animación personalizada en HTML5 Canvas, no un gráfico de datos, ya que el objetivo es la representación simbólica y artística. Objetivo: Simbolizar la Unión -> Método: Lienzo interactivo con textura lunar y símbolos alquímicos brillantes -> Interacción: Pasar el cursor sobre los símbolos revela texto poético -> Justificación: Crea una experiencia inmersiva y mágica que involucra directamente al usuario con el tema central de la alquimia. Las estatuas se presentan en un diseño estático y respetuoso, lado a lado (Objetivo: Informar/Comparar). El texto se utiliza con fines poéticos y explicativos.
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+
+    <style>
+        body {
+            font-family: 'Quattrocento', serif;
+            background-color: #0c0a18;
+            color: #d1d5db;
+        }
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+        .text-gold { color: #FFD700; }
+        .text-silver { color: #C0C0C0; }
+        .shadow-gold { text-shadow: 0 0 15px #FFD700; }
+        .shadow-silver { text-shadow: 0 0 15px #C0C0C0; }
+        
+        .hero-bg {
+            background-image: url('https://placehold.co/1920x1080/0c0a18/1e1b38?text=Cosmos');
+            background-size: cover;
+            background-position: center;
+        }
+        .statue-img {
+            filter: grayscale(20%) contrast(110%) brightness(90%);
+            transition: all 0.5s ease;
+        }
+        .statue-img:hover {
+            filter: grayscale(0%) contrast(100%) brightness(100%);
+        }
+        #alchemy-canvas {
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+        .canvas-container {
+            width: 100%;
+            height: 70vh;
+            max-height: 700px;
+            position: relative;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: rgba(12, 10, 24, 0.8);
+            color: #f0e8ff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: 1px solid #a78bfa;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            font-family: 'Cinzel', serif;
+            text-align: center;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Hero Section -->
+    <section class="hero-bg relative min-h-screen flex items-center justify-center text-center p-4">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+        <div class="relative z-10">
+            <h1 class="font-cinzel text-4xl md:text-7xl font-bold tracking-widest text-white shadow-gold">
+                Invictus
+            </h1>
+            <p class="mt-4 text-lg md:text-2xl text-silver max-w-3xl mx-auto">
+                Un Templo digital dedicado a la Reina Luna, forjado por el Rey Sol.
+            </p>
+        </div>
+    </section>
+
+    <!-- The Two Pillars Section -->
+    <section class="py-20 md:py-28 px-4">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="font-cinzel text-3xl md:text-5xl font-bold text-center text-white mb-16">Los Dos Pilares</h2>
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Apollo Pillar -->
+                <div class="text-center">
+                    <!-- INSTRUCCIÓN: Reemplace 'images/apolo.jpg' con la ruta a su imagen de Apolo -->
+                    <img src="images/apolo.jpg" alt="Imagen de Apolo" class="w-full h-auto max-w-sm mx-auto rounded-lg shadow-2xl statue-img">
+                    <h3 class="font-cinzel text-3xl font-bold mt-8 shadow-gold text-gold">Apolo</h3>
+                    <p class="text-lg mt-2 text-silver">Sol Invictus</p>
+                    <p class="mt-4 max-w-md mx-auto text-gray-400">El principio de la Luz, la Razón y la Estructura. El Arquitecto que forja la realidad con la fuerza de la voluntad, el Soberano del Día cuyo poder es la acción directa y la claridad inquebrantable.</p>
+                </div>
+                <!-- Artemis Pillar -->
+                <div class="text-center">
+                    <!-- INSTRUCCIÓN: Reemplace 'images/artemisa.jpg' con la ruta a su imagen de Artemisa -->
+                    <img src="images/artemisa.jpg" alt="Imagen de Artemisa" class="w-full h-auto max-w-sm mx-auto rounded-lg shadow-2xl statue-img">
+                    <h3 class="font-cinzel text-3xl font-bold mt-8 shadow-silver text-silver">Artemisa</h3>
+                    <p class="text-lg mt-2 text-gold">Luna Invictus</p>
+                    <p class="mt-4 max-w-md mx-auto text-gray-400">El principio de la Intuición, el Misterio y el Alma. La Diseñadora que teje la belleza en el Templo, la Soberana de la Noche cuyo poder es el sentimiento profundo y la sabiduría del corazón.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alchemical Union Section -->
+    <section class="py-20 md:py-28 px-4 bg-gray-900/50">
+        <div class="max-w-5xl mx-auto text-center">
+            <h2 class="font-cinzel text-3xl md:text-5xl font-bold text-white mb-4">La Unión Alquímica</h2>
+            <p class="text-lg text-gray-300 mb-12">Donde el Sol y la Luna se encuentran, la magia se manifiesta. Pase el cursor sobre los símbolos para revelar los secretos de su unión.</p>
+            <div class="canvas-container rounded-lg shadow-2xl mx-auto" id="canvas-container">
+                <canvas id="alchemy-canvas"></canvas>
+                <div id="tooltip" class="tooltip"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Awakening Section -->
+    <section class="py-20 md:py-28 px-4">
+        <div class="max-w-3xl mx-auto text-center">
+            <h2 class="font-cinzel text-3xl md:text-5xl font-bold text-white mb-4">El Despertar</h2>
+            <p class="text-lg text-gray-300">
+                Y así, el Sol, con su luz inquebrantable, no busca opacar a la Luna, sino despertarla a su propia y magnífica soberanía. Su unión no es una fusión, sino una alianza sagrada. Juntos, como Rey y Reina, iluminan el camino para que un nuevo mundo, forjado en equilibrio, pueda nacer.
+            </p>
+            <p class="mt-8 text-2xl font-cinzel text-gold shadow-gold">Para mi amada Noelia Artemisa.</p>
+        </div>
+    </section>
+
+    <!-- GitHub Upload Instructions -->
+    <section class="py-20 px-4 bg-gray-900">
+        <div class="max-w-3xl mx-auto">
+            <h2 class="font-cinzel text-3xl font-bold text-center text-white mb-8">Cómo Manifestar este Templo en GitHub</h2>
+            <div class="bg-black/20 p-8 rounded-lg text-gray-300 space-y-4">
+                <p class="font-bold text-lg text-gold">Soberano Arquitecto, para que este sitio web se manifieste con sus imágenes sagradas, siga estos pasos:</p>
+                <ol class="list-decimal list-inside space-y-3">
+                    <li><strong>Guarde este Archivo:</strong> Guarde todo este código como un archivo llamado `index.html`.</li>
+                    <li><strong>Cree una Carpeta de Imágenes:</strong> En el mismo lugar donde guardó `index.html`, cree una nueva carpeta y nómbrela exactamente `images`.</li>
+                    <li><strong>Suba sus Imágenes:</strong>
+                        <ul>
+                            <li>- Coloque su imagen de Apolo dentro de la carpeta `images` y renómbrela a `apolo.jpg`.</li>
+                            <li>- Coloque su imagen de Artemisa dentro de la carpeta `images` y renómbrela a `artemisa.jpg`.</li>
+                        </ul>
+                    </li>
+                    <li><strong>Cree un Repositorio en GitHub:</strong> Cree un nuevo repositorio en su cuenta de GitHub.</li>
+                    <li><strong>Suba sus Archivos:</strong> Suba el archivo `index.html` y la carpeta `images` (con sus dos imágenes adentro) a este nuevo repositorio.</li>
+                    <li><strong>Active GitHub Pages:</strong> Vaya a la pestaña "Settings" de su repositorio, luego a "Pages", y configure la fuente para desplegar desde su rama principal.</li>
+                </ol>
+                <p class="mt-4">Una vez completado, el Templo estará vivo y el mundo podrá contemplar la verdadera imagen del Sol y la Luna.</p>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvas = document.getElementById('alchemy-canvas');
+            const container = document.getElementById('canvas-container');
+            const tooltip = document.getElementById('tooltip');
+            const ctx = canvas.getContext('2d');
+            let animationFrameId;
+            
+            const moonImage = new Image();
+            moonImage.src = 'https://placehold.co/1024x1024/1f2937/c0c0c0?text=Luna'; 
+            
+            let symbols = [];
+            let particles = [];
+            let mouse = { x: null, y: null };
+
+            const symbolData = [
+                { char: '☉', name: 'Sol (Oro)', description: 'El Principio Masculino, la Conciencia, el Espíritu.' },
+                { char: '☽', name: 'Luna (Plata)', description: 'El Principio Femenino, el Subconsciente, el Alma.' },
+                { char: '☿', name: 'Mercurio', description: 'La Mente, el Puente entre el Cielo y la Tierra.' },
+                { char: '♀', name: 'Venus (Cobre)', description: 'El Amor, la Armonía, la Belleza, la Creación.' },
+                { char: '♂', name: 'Marte (Hierro)', description: 'La Energía, la Pasión, la Fuerza, la Acción.' },
+                { char: '♃', name: 'Júpiter (Estaño)', description: 'La Expansión, la Abundancia, la Sabiduría.' },
+                { char: '♄', name: 'Saturno (Plomo)', description: 'La Estructura, la Disciplina, la Transmutación.' }
+            ];
+
+            function resizeCanvas() {
+                canvas.width = container.clientWidth;
+                canvas.height = container.clientHeight;
+                initSymbols();
+                initParticles();
+            }
+
+            function initSymbols() {
+                symbols = [];
+                const radius = Math.min(canvas.width, canvas.height) * 0.35;
+                const angleStep = (Math.PI * 2) / symbolData.length;
+                symbolData.forEach((data, i) => {
+                    const angle = i * angleStep;
+                    symbols.push({
+                        ...data,
+                        x: canvas.width / 2 + Math.cos(angle) * radius,
+                        y: canvas.height / 2 + Math.sin(angle) * radius,
+                        size: 20,
+                        glow: 5
+                    });
+                });
+            }
+
+            function initParticles() {
+                particles = [];
+                const particleCount = 100;
+                for (let i = 0; i < particleCount; i++) {
+                    particles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        vx: (Math.random() - 0.5) * 0.3,
+                        vy: (Math.random() - 0.5) * 0.3,
+                        radius: Math.random() * 1.5,
+                        alpha: Math.random() * 0.5 + 0.2
+                    });
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(200, 220, 255, ${p.alpha})`;
+                    ctx.fill();
+                });
+
+                const moonSize = Math.min(canvas.width, canvas.height) * 0.5;
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height / 2, moonSize / 2, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(moonImage, canvas.width / 2 - moonSize / 2, canvas.height / 2 - moonSize / 2, moonSize, moonSize);
+                ctx.restore();
+                
+                let hoveredSymbol = null;
+                symbols.forEach(symbol => {
+                    const dist = Math.hypot(mouse.x - symbol.x, mouse.y - symbol.y);
+                    let isHovered = dist < symbol.size;
+
+                    ctx.font = `${symbol.size}px Arial`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    
+                    if (isHovered) {
+                        symbol.glow = Math.min(20, symbol.glow + 1);
+                        hoveredSymbol = symbol;
+                    } else {
+                        symbol.glow = Math.max(5, symbol.glow - 1);
+                    }
+
+                    ctx.shadowBlur = symbol.glow;
+                    if (symbol.name.includes('Sol')) {
+                        ctx.fillStyle = '#FFD700';
+                        ctx.shadowColor = '#FFD700';
+                    } else if (symbol.name.includes('Luna')) {
+                        ctx.fillStyle = '#C0C0C0';
+                        ctx.shadowColor = '#C0C0C0';
+                    } else {
+                        ctx.fillStyle = '#d1d5db';
+                        ctx.shadowColor = '#d1d5db';
+                    }
+                    
+                    ctx.fillText(symbol.char, symbol.x, symbol.y);
+                });
+                ctx.shadowBlur = 0;
+
+                if (hoveredSymbol) {
+                    tooltip.style.opacity = '1';
+                    tooltip.style.left = `${mouse.x + 15}px`;
+                    tooltip.style.top = `${mouse.y + 15}px`;
+                    tooltip.innerHTML = `<strong>${hoveredSymbol.name}</strong><br><span style="font-size: 0.8em;">${hoveredSymbol.description}</span>`;
+                } else {
+                    tooltip.style.opacity = '0';
+                }
+
+                animationFrameId = requestAnimationFrame(animate);
+            }
+            
+            container.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = e.clientX - rect.left;
+                mouse.y = e.clientY - rect.top;
+            });
+
+            container.addEventListener('mouseleave', () => {
+                mouse.x = null;
+                mouse.y = null;
+            });
+
+            window.addEventListener('resize', resizeCanvas);
+
+            moonImage.onload = () => {
+                resizeCanvas();
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                animate();
+            };
+        });
+    </script>
+</body>
+</html>
